@@ -31,14 +31,14 @@ export default function Footer({ onQualifyClick, onLegalClick }: FooterProps) {
   ];
 
   return (
-    <footer className="bg-ink-950 text-gray-400 pt-16 pb-8">
+    <footer className="relative overflow-hidden bg-gradient-to-b from-ink-900 to-ink-950 text-gray-400 pt-14 sm:pt-16 pb-8">
       <div className="container-luxe">
         {/* Top section */}
-        <div className="grid lg:grid-cols-4 gap-10 lg:gap-12 mb-12">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-9 lg:gap-12 mb-10">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <Logo variant="light" className="h-36 w-auto mb-5" />
-            <p className="text-sm leading-relaxed mb-4">
+            <Logo variant="light" className="h-20 sm:h-24 w-auto max-w-[170px] object-contain mb-4" />
+            <p className="text-sm leading-7 max-w-xs mb-5">
               {company.tagline}. Confidential, professional debt solutions for
               South Africans.
             </p>
@@ -172,7 +172,7 @@ export default function Footer({ onQualifyClick, onLegalClick }: FooterProps) {
         </div>
 
         {/* Legal links */}
-        <div className="border-t border-ink-800 pt-6 pb-4">
+        <div className="border-t border-white/10 pt-6 pb-4">
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-6">
             {footerLegalLinks.map((link) => {
               const id = link.href.replace('#', '');
@@ -190,7 +190,7 @@ export default function Footer({ onQualifyClick, onLegalClick }: FooterProps) {
         </div>
 
         {/* Disclaimer */}
-        <div className="border-t border-ink-800 pt-6">
+        <div className="border-t border-white/10 pt-6">
           <p className="text-xs text-gray-500 leading-relaxed text-center max-w-4xl mx-auto mb-4">
             Disclaimer: Mpohlo Holdings is a registered debt counsellor
             (NCR {company.ncrNumber}). The information on this website is
