@@ -4,9 +4,6 @@ import {
   MapPin,
   Clock,
   Facebook,
-  Instagram,
-  Linkedin,
-  Twitter,
   ShieldCheck,
   Star,
 } from 'lucide-react';
@@ -25,9 +22,6 @@ type FooterProps = {
 export default function Footer({ onQualifyClick, onLegalClick }: FooterProps) {
   const socialIcons = [
     { Icon: Facebook, href: company.social.facebook, label: 'Facebook' },
-    { Icon: Instagram, href: company.social.instagram, label: 'Instagram' },
-    { Icon: Linkedin, href: company.social.linkedin, label: 'LinkedIn' },
-    { Icon: Twitter, href: company.social.twitter, label: 'Twitter' },
   ];
 
   return (
