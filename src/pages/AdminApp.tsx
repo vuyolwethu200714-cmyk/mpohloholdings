@@ -38,7 +38,7 @@ export default function AdminApp() {
     setAuthMessage('')
     if (!supabase) { setAuthMessage('Supabase is not configured in this environment.'); return }
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password })
-    if (error) setAuthMessage('Invalid email or password. Please check your credentials and try again.')
+    if (error) setAuthMessage(error.message === 'Invalid login credentials' ? 'Invalid email or password. Please check your credentials and try again.' : `Sign-in failed: ${error.message}`)
   }
 
   if (!session) return <LoginScreen email={email} password={password} setEmail={setEmail} setPassword={setPassword} message={authMessage} onSignIn={signIn} />
