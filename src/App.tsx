@@ -38,7 +38,7 @@ function App() {
     setLegalPage(id);
   }, []);
 
-  if (window.location.pathname.startsWith('/admin')) return <AdminApp />;
+  if (window.location.pathname.startsWith('/admin') || new URLSearchParams(window.location.search).has('admin')) return <AdminApp />;
 
   const goHome = useCallback(() => {
     setLegalPage(null);
