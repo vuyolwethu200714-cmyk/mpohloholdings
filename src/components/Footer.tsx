@@ -31,7 +31,7 @@ export default function Footer({ onQualifyClick, onLegalClick }: FooterProps) {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-9 lg:gap-12 mb-10">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <Logo variant="light" className="h-20 sm:h-24 w-auto max-w-[170px] object-contain mb-4" />
+            <Logo variant="light" className="h-14 sm:h-16 w-auto max-w-[140px] object-contain mb-4" />
             <p className="text-sm leading-7 max-w-xs mb-5">
               {company.tagline}. Confidential, professional debt solutions for
               South Africans.
