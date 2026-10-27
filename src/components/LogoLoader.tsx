@@ -15,7 +15,7 @@ export default function LogoLoader() {
           <img
             src="/WhatsApp_Image_2026-09-15_at_16.38.48.jpeg"
             alt="Mpohlo Holdings"
-            className="w-52 h-52 object-contain"
+            className="w-44 h-44 sm:w-48 sm:h-48 object-contain mix-blend-screen"
           />
         </div>
         <div
