@@ -2,15 +2,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { BarChart3, Bell, ChevronDown, FileText, Inbox, LayoutDashboard, LogOut, Menu, Search, Settings, ShieldCheck, Sparkles, X } from 'lucide-react'
 
-const ADMIN_PHONE = '+27784735592'
 type Section = 'overview' | 'enquiries' | 'content' | 'seo' | 'settings'
 
 export default function AdminApp() {
   const [session, setSession] = useState<any>(null)
   const [section, setSection] = useState<Section>('overview')
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [authMode, setAuthMode] = useState<'phone' | 'verify'>('phone')
-  const [otp, setOtp] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [authMessage, setAuthMessage] = useState('')
   const [enquiries, setEnquiries] = useState<any[]>([])
   const [pages, setPages] = useState<any[]>([])
@@ -35,21 +34,14 @@ export default function AdminApp() {
     })
   }, [session])
 
-  async function requestCode() {
+  async function signIn() {
     setAuthMessage('')
     if (!supabase) { setAuthMessage('Supabase is not configured in this environment.'); return }
-    const { error } = await supabase.auth.signInWithOtp({ phone: ADMIN_PHONE })
-    if (error) setAuthMessage('WhatsApp OTP is not enabled yet. Connect a WhatsApp-compatible Supabase phone provider before using administrator login.')
-    else { setAuthMode('verify'); setAuthMessage('A verification code was requested for the authorised administrator number.') }
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password })
+    if (error) setAuthMessage('Invalid email or password. Please check your credentials and try again.')
   }
 
-  async function verifyCode() {
-    if (!supabase) return
-    const { error } = await supabase.auth.verifyOtp({ phone: ADMIN_PHONE, token: otp, type: 'sms' })
-    if (error) setAuthMessage('That code is invalid or expired. Request a new code and try again.')
-  }
-
-  if (!session) return <LoginScreen mode={authMode} otp={otp} setOtp={setOtp} setMode={setAuthMode} message={authMessage} onRequest={requestCode} onVerify={verifyCode} />
+  if (!session) return <LoginScreen email={email} password={password} setEmail={setEmail} setPassword={setPassword} message={authMessage} onSignIn={signIn} />
 
   const counts = { total: enquiries.length, fresh: enquiries.filter((item) => item.status === 'new').length, published: pages.filter((item) => item.status === 'published').length }
   return <div className="admin-shell">
@@ -69,7 +61,7 @@ export default function AdminApp() {
   </div>
 }
 
-function LoginScreen({ mode, otp, setOtp, setMode, message, onRequest, onVerify }: any) { return <div className="admin-login"><div className="login-card"><div className="login-mark"><ShieldCheck size={30} /></div><span className="admin-kicker">Mpohlo Holdings</span><h1>Administrator sign in</h1><p>Secure access to your website, enquiries and SEO settings.</p>{mode === 'phone' ? <><div className="login-method"><span>WhatsApp verification</span><b>+27 78 ••• 5592</b></div><button className="admin-primary" onClick={onRequest}>Request WhatsApp code</button></> : <><label htmlFor="otp">Verification code</label><input id="otp" inputMode="numeric" value={otp} onChange={(event) => setOtp(event.target.value)} placeholder="Enter 6-digit code" /><button className="admin-primary" onClick={onVerify}>Verify and continue</button><button className="admin-link" onClick={() => setMode('phone')}>Request a new code</button></>}{message && <div className="admin-alert">{message}</div>}<small>Only the authorised Mpohlo Holdings administrator number can request access. OTP provider setup is required before codes can be delivered.</small></div></div> }
+function LoginScreen({ email, password, setEmail, setPassword, message, onSignIn }: any) { return <div className="admin-login"><div className="login-card"><div className="login-mark"><ShieldCheck size={30} /></div><span className="admin-kicker">Mpohlo Holdings</span><h1>Administrator sign in</h1><p>Secure access to your website, enquiries and SEO settings.</p><label htmlFor="admin-email">Email address</label><input id="admin-email" type="email" autoComplete="username" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="admin@example.com" /><label htmlFor="admin-password">Password</label><input id="admin-password" type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Enter your password" onKeyDown={(event) => { if (event.key === 'Enter' && !event.nativeEvent.isComposing && event.keyCode !== 229) onSignIn() }} /><button className="admin-primary" onClick={onSignIn}>Sign in</button>{message && <div className="admin-alert">{message}</div>}<small>Use the authorised Mpohlo Holdings administrator email and password.</small></div></div> }
 
 function Overview({ counts, enquiries, pages, loading, go }: any) { return <div className="admin-content"><div className="admin-welcome"><div><span className="admin-kicker">Dashboard overview</span><h2>Your website at a glance</h2><p>Monitor incoming enquiries and keep the public website accurate and discoverable.</p></div><a href="/" target="_blank" rel="noreferrer" className="admin-secondary">View public website</a></div><div className="metric-grid"><Metric label="Total enquiries" value={counts.total} icon={Inbox} /><Metric label="New enquiries" value={counts.fresh} icon={Bell} accent /><Metric label="Published pages" value={counts.published} icon={FileText} /></div><div className="admin-grid"><section className="admin-panel"><div className="panel-heading"><div><span className="admin-kicker">Latest activity</span><h3>Recent enquiries</h3></div><button onClick={() => go('enquiries')}>View all</button></div>{loading ? <div className="admin-empty">Loading live data…</div> : enquiries.length === 0 ? <div className="admin-empty">No enquiries have been submitted yet.</div> : <div className="admin-list">{enquiries.slice(0, 5).map((item: any) => <div className="admin-row" key={item.id}><div className="avatar">{item.name?.slice(0, 1).toUpperCase()}</div><div><strong>{item.name}</strong><span>{item.enquiry_type} · {new Date(item.created_at).toLocaleDateString('en-ZA')}</span></div><em className={`status ${item.status}`}>{item.status.replace('_', ' ')}</em></div>)}</div>}</section><section className="admin-panel health-panel"><div className="panel-heading"><div><span className="admin-kicker">Site health</span><h3>SEO checklist</h3></div><BarChart3 size={20} /></div><Health label="Published pages have metadata" complete={pages.length > 0} /><Health label="Sitemap is generated from live pages" complete /><Health label="Robots file is accessible" complete /><Health label="Google integrations connected" complete={false} /></section></div></div> }
 function Metric({ label, value, icon: Icon, accent }: any) { return <div className={`metric ${accent ? 'accent' : ''}`}><div className="metric-icon"><Icon size={19} /></div><span>{label}</span><strong>{value}</strong></div> }
