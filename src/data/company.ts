@@ -16,10 +16,6 @@ export const company = {
     "If Mpohlo Holdings has helped you, we would be grateful if you could share your experience. Your testimonial can encourage and reassure others who are facing similar financial challenges.",
   social: {
     facebook: 'https://www.facebook.com/p/Mpohlo-Holdings-100083523602725/',
-    trustpilot: 'https://www.trustpilot.com',
-    instagram: 'https://instagram.com',
-    linkedin: 'https://linkedin.com',
-    twitter: 'https://twitter.com',
   },
 };
 
