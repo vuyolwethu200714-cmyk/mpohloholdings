@@ -30,6 +30,14 @@
   ],
   "rewrites": [
     {
+      "source": "/admin11",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin11/:path*",
+      "destination": "/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
