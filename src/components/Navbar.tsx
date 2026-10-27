@@ -40,7 +40,7 @@ export default function Navbar({ onQualifyClick }: NavbarProps) {
         >
           <Logo
             variant="light"
-            className="h-[4.5rem] w-auto transition-transform hover:scale-105"
+            className="h-16 w-auto transition-transform hover:scale-105"
           />
         </button>
 
