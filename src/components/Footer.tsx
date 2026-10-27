@@ -204,6 +204,18 @@ export default function Footer({ onQualifyClick, onLegalClick }: FooterProps) {
             &copy; {new Date().getFullYear()} {company.name}. All rights
             reserved.
           </p>
+          <p className="mt-2 text-center text-[10px] text-gray-600">
+            Website by{" "}
+            <a
+              href="https://visibleweb.xyz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-500 underline decoration-gray-700 underline-offset-2 transition-colors hover:text-gold-400"
+              aria-label="Website designed by VisibleWeb"
+            >
+              VisibleWeb
+            </a>
+          </p>
         </div>
       </div>
     </footer>
