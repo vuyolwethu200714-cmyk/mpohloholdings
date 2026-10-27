@@ -18,6 +18,7 @@ import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import QualificationForm from '@/components/QualificationForm';
 import LegalPage from '@/pages/LegalPage';
+import AdminApp from '@/pages/AdminApp';
 
 function App() {
   const [qualifyOpen, setQualifyOpen] = useState(false);
@@ -36,6 +37,8 @@ function App() {
   const goToLegal = useCallback((id: string) => {
     setLegalPage(id);
   }, []);
+
+  if (window.location.pathname.startsWith('/admin')) return <AdminApp />;
 
   const goHome = useCallback(() => {
     setLegalPage(null);
