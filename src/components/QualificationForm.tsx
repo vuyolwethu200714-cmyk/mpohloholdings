@@ -64,6 +64,8 @@ export default function QualificationForm({ open, onClose }: QualificationFormPr
   const [step, setStep] = useState(0);
   const [data, setData] = useState<FormData>(initialData);
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   if (!open) return null;
 
@@ -78,11 +80,23 @@ export default function QualificationForm({ open, onClose }: QualificationFormPr
     return false;
   };
 
-  const handleSubmit = () => {
-    // Demo submission — data is structured for future integration
-    // with email, WhatsApp, Supabase, or a lead-management system.
-    console.log('Qualification form submission:', data);
-    setSubmitted(true);
+  const handleSubmit = async () => {
+    setSending(true);
+    setSubmitError('');
+    try {
+      const response = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...data, formType: 'Confidential qualification assessment' }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || 'We could not send your assessment. Please try again.');
+      setSubmitted(true);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'We could not send your assessment. Please try again.');
+    } finally {
+      setSending(false);
+    }
   };
 
   const handleClose = () => {
@@ -104,13 +118,17 @@ export default function QualificationForm({ open, onClose }: QualificationFormPr
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
         <div className="bg-ink-900 px-6 py-5 flex items-center justify-between flex-shrink-0">
-          <div>
+          <div className="flex items-center gap-3">
+            <img src="/mpohlo-holdings-logo.png" alt="Mpohlo Holdings" className="h-10 w-auto max-w-[125px] object-contain" />
+            <div className="h-9 w-px bg-white/20" />
+            <div>
             <h3 className="font-serif text-xl font-bold text-white">
               Check If You Qualify
             </h3>
             <p className="text-sm text-gray-400 mt-1">
               Confidential, no obligation assessment
             </p>
+            </div>
           </div>
           <button
             onClick={handleClose}
@@ -380,6 +398,7 @@ export default function QualificationForm({ open, onClose }: QualificationFormPr
               )}
             </div>
 
+            {submitError && <div role="alert" className="mx-6 mb-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</div>}
             {/* Footer buttons */}
             <div className="px-6 py-4 border-t border-ink-100 flex items-center justify-between flex-shrink-0 bg-ink-50/50">
               <button
@@ -401,10 +420,10 @@ export default function QualificationForm({ open, onClose }: QualificationFormPr
               ) : (
                 <button
                   onClick={handleSubmit}
-                  disabled={!canProceed()}
+                  disabled={!canProceed() || sending}
                   className="btn-gold disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                 >
-                  Submit Assessment
+                  {sending ? 'Sending securely…' : 'Submit Assessment'}
                   <Check className="w-5 h-5" />
                 </button>
               )}
