@@ -10,15 +10,30 @@ export default function CallBackForm() {
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const update = (field: string, value: string) => {
     setData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = () => {
-    // Demo submission — ready for future integration with email, WhatsApp, or Supabase.
-    console.log('Call-back form submission:', data);
-    setSubmitted(true);
+  const handleSubmit = async () => {
+    setSending(true);
+    setSubmitError('');
+    try {
+      const response = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...data, formType: 'Call-back request' }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || 'We could not send your request. Please try again.');
+      setSubmitted(true);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'We could not send your request. Please try again.');
+    } finally {
+      setSending(false);
+    }
   };
 
   const canSubmit = data.fullName.trim() && data.phone.trim() && data.callBackTime;
@@ -100,6 +115,11 @@ export default function CallBackForm() {
                 </div>
               ) : (
                 <div className="space-y-5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <img src="/mpohlo-holdings-logo.png" alt="Mpohlo Holdings" className="h-12 w-auto max-w-[150px] object-contain" />
+                    <div className="h-9 w-px bg-ink-200" />
+                    <div className="text-xs text-ink-500">Confidential<br />Call-back Request</div>
+                  </div>
                   <h3 className="font-serif text-xl font-bold text-ink-900 mb-2">
                     Request Your Call Back
                   </h3>
@@ -170,13 +190,14 @@ export default function CallBackForm() {
                       />
                     </div>
                   </div>
+                  {submitError && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</p>}
                   <button
                     onClick={handleSubmit}
-                    disabled={!canSubmit}
+                    disabled={!canSubmit || sending}
                     className="btn-gold w-full disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                   >
                     <Send className="w-5 h-5" />
-                    Request Call Back
+                    {sending ? 'Sending securely…' : 'Request Call Back'}
                   </button>
                 </div>
               )}
