@@ -20,15 +20,30 @@ export default function Contact() {
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const update = (field: string, value: string) => {
     setData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = () => {
-    // Demo submission — ready for future integration with email, WhatsApp, or Supabase.
-    console.log('Contact form submission:', data);
-    setSubmitted(true);
+  const handleSubmit = async () => {
+    setSending(true);
+    setSubmitError('');
+    try {
+      const response = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || 'We could not send your message. Please try again.');
+      setSubmitted(true);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'We could not send your message. Please try again.');
+    } finally {
+      setSending(false);
+    }
   };
 
   const canSubmit = data.fullName.trim() && data.email.trim() && data.phone.trim() && data.message.trim();
@@ -180,6 +195,11 @@ export default function Contact() {
                 </div>
               ) : (
                 <div className="space-y-5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <img src="/mpohlo-holdings-logo.png" alt="Mpohlo Holdings" className="h-12 w-auto max-w-[150px] object-contain" />
+                    <div className="h-9 w-px bg-ink-200" />
+                    <div className="text-xs text-ink-500">Confidential<br />Enquiry Form</div>
+                  </div>
                   <h3 className="font-serif text-xl font-bold text-ink-900 mb-2">
                     Send Us a Message
                   </h3>
@@ -243,13 +263,15 @@ export default function Contact() {
                       />
                     </div>
                   </div>
+                  {submitError && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</p>}
+                  <p className="text-xs leading-relaxed text-ink-400">By submitting, you agree that Mpohlo Holdings may use these details to respond to your enquiry. Your information will be handled confidentially.</p>
                   <button
                     onClick={handleSubmit}
-                    disabled={!canSubmit}
+                    disabled={!canSubmit || sending}
                     className="btn-gold w-full disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                   >
                     <Send className="w-5 h-5" />
-                    Send Message
+                    {sending ? 'Sending securely…' : 'Send Message'}
                   </button>
                 </div>
               )}
