@@ -17,21 +17,47 @@ export default function AdminApp() {
 
   useEffect(() => {
     if (!supabase) { setLoading(false); return }
-    supabase.auth.getSession().then(({ data }) => setSession(data.session))
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, next) => setSession(next))
-    return () => listener.subscription.unsubscribe()
+
+    let mounted = true
+    supabase.auth.getSession()
+      .then(({ data, error }) => {
+        if (!mounted) return
+        if (error) setAuthMessage('Unable to load administrator access. Please refresh and try again.')
+        setSession(data.session)
+        setLoading(false)
+      })
+      .catch(() => {
+        if (!mounted) return
+        setAuthMessage('Unable to load administrator access. Please refresh and try again.')
+        setLoading(false)
+      })
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, next) => {
+      if (mounted) setSession(next)
+    })
+    return () => {
+      mounted = false
+      listener.subscription.unsubscribe()
+    }
   }, [])
 
   useEffect(() => {
     if (!session || !supabase) return
+    setLoading(true)
+
     Promise.all([
       supabase.from('enquiries').select('id,name,email,phone,enquiry_type,status,created_at').order('created_at', { ascending: false }).limit(50),
       supabase.from('site_pages').select('id,slug,title,status,updated_at').order('updated_at', { ascending: false }),
-    ]).then(([enquiriesResult, pagesResult]) => {
-      setEnquiries(enquiriesResult.data ?? [])
-      setPages(pagesResult.data ?? [])
-      setLoading(false)
-    })
+    ])
+      .then(([enquiriesResult, pagesResult]) => {
+        setEnquiries(enquiriesResult.data ?? [])
+        setPages(pagesResult.data ?? [])
+        if (enquiriesResult.error || pagesResult.error) {
+          setAuthMessage('Administrator data could not be loaded. Please refresh and try again.')
+        }
+      })
+      .catch(() => setAuthMessage('Administrator data could not be loaded. Please refresh and try again.'))
+      .finally(() => setLoading(false))
   }, [session])
 
   async function signIn() {
