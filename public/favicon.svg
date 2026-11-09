@@ -1,1 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><image width="48" height="48" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAsICAoIBwsKCQoNDAsNERwSEQ8PESIZGhQcKSQrKigkJyctMkA3LTA9MCcnOEw5PUNFSElIKzZPVU5GVEBHSEX/2wBDAQwNDREPESESEiFFLicuRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUX/wAARCAAwADADASIAAhEBAxEB/8QAGwABAAMAAwEAAAAAAAAAAAAABgAEBwECBQP/xAAvEAACAQQBAgUCBAcAAAAAAAABAgMABAURBhIhMTJBUWEHIhMUI0NScYGRobHR/8QAGQEAAgMBAAAAAAAAAAAAAAAAAQIAAwQF/8QAIREAAgICAQQDAAAAAAAAAAAAAQIAEQMxEgQhMkFhgfD/2gAMAwEAAhEDEQA/AMiqV9ba3mup0gt43llkIVEQbLH2ApvbYqdpVTL8dx9nY6P49yrlGjGvMD1nv8a70rMBCBcB1K7MPvPTsjfY0k4xxC4zzieXqgsVOml13f4X/vgKjuqLyY0JACTQhmpTzIcOsRcz2WKjvZ7yNVLM8qLFH1eHUSNn+lCru1msrl7e5jaOWM6ZWHhSY8yZPEwspXc9Xh7az6KHCPJDNHGSdfe0bBRv0JJAq/g+BZPNQSTForWNHMe5t7Zh2IAHse26MW8Uk86RRDqkkYKqj1JOgK2sBuG8F6ZZY2ntYW0T5WkYkgfPc/4pczFfHZhQA7hOH6YXkE6SPeWcyqdmN1fTfB13pSq5+0iVVhxU0aDQhh64tAegJ2KqWf1GwlxGguJZoJdDq64jrfrrW+1W5eX4RAC96UBPYvDIv+1rm5znbsy39S9Ag0Z5uUvVntJstZI1vk8aP1oZhpuj1RteK+oI9u1Zrm8tLmsgbyZERyqqQm9dhr1rQefAw4tL+1fpaQfl5Cv7kTdwP7jt/OsvJ3WrokXhz/D4iZSbqWcbcJa5K1uJN9EUyO2vHQYE0k5zySz5HcwzWVxddCAg28yBVU/xDRPc0RqVtKgm5TfapN01vuT4zNcYtbDJSXaXluNh0QMrMAQN7PgRrdCqlBkDUT6kBIjFeSY3IcUhxOUa5SaHXTJCgby+XxPsdUPOtnR2K4qUExql8fcJYnc//9k="/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Mpohlo Holdings lion emblem">
+  <rect width="48" height="48" rx="8" fill="#050505"/>
+  <g fill="none" stroke="#D6AE55" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M24 4.8 31.2 7l6.4 5.2 4 7.2-.8 9.2-4.2 8.1L24 43.2 11.4 36.7l-4.2-8.1-.8-9.2 4-7.2L16.8 7 24 4.8Z" fill="#17130B"/>
+    <path d="M15.2 15.4 10.5 13l1.4 8.2 3.7 4.2M32.8 15.4l4.7-2.4-1.4 8.2-3.7 4.2" />
+    <path d="M17.2 14.8 24 10.9l6.8 3.9 3.2 7.1-2 10.2L24 38l-8-5.9-2-10.2 3.2-7.1Z" fill="#D6AE55"/>
+    <path d="m17.2 19.2 4.4 1.6-1.2 3.1-4.4-1.1ZM30.8 19.2l-4.4 1.6 1.2 3.1 4.4-1.1Z" fill="#080808" stroke="#080808"/>
+    <path d="M21.6 27.1 24 25.8l2.4 1.3-.7 3.2H22.3l-.7-3.2Z" fill="#080808" stroke="#080808"/>
+    <path d="m20.3 33.1 3.7 1.7 3.7-1.7M24 30.4v2.3M14.2 27.6l4.6 1.1M33.8 27.6l-4.6 1.1" stroke="#080808"/>
+    <path d="M17.2 14.8 14.4 11M30.8 14.8l2.8-3.8M13.5 29.6l-3.2 2.1M34.5 29.6l3.2 2.1" />
+  </g>
+</svg>
