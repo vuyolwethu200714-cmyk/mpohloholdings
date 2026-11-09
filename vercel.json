@@ -4,6 +4,19 @@
   "framework": "vite",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.mpohloholdings.org.za"
+        }
+      ],
+      "destination": "https://mpohloholdings.org.za/:path*",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/favicon.svg",
